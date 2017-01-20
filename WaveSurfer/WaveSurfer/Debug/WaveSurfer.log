@@ -1,0 +1,9 @@
+﻿  game.cpp
+  Sprite.cpp
+c:\users\computing\desktop\wavesurfer\wavesurfer\wavesurfer\sprite.cpp(13): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\computing\desktop\wavesurfer\wavesurfer\wavesurfer\sprite.cpp(14): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  Main.cpp
+  WaveSurfer.vcxproj -> C:\Users\Computing\Desktop\WaveSurfer\WaveSurfer\Debug\WaveSurfer.exe
+  WaveSurfer.vcxproj -> C:\Users\Computing\Desktop\WaveSurfer\WaveSurfer\Debug\WaveSurfer.pdb (Full PDB)
