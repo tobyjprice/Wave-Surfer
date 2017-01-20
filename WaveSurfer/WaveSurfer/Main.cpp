@@ -101,7 +101,12 @@ void process_input(game* game)
 void render(game* game)
 {
 	SDL_RenderClear(game->renderer);
+	for (auto& bg : game->bg)
+	{
+		SDL_RenderCopy(game->renderer, bg->texture, NULL, &bg->dstRect);
+	}
 	SDL_RenderCopy(game->renderer, game->sprite->texture, &game->sprite->srcRect, &game->sprite->dstRect);
 	SDL_RenderCopy(game->renderer, game->seagull->texture, &game->seagull->srcRect, &game->seagull->dstRect);
+	
 	SDL_RenderPresent(game->renderer);
 }
