@@ -6,7 +6,7 @@ class Sprite
 {
 public:
 	Sprite();
-	Sprite(int w, int h, double x, double y, SDL_Renderer* renderer, int animStyle, SDL_Surface* surface, double animDur);
+	Sprite(int w, int h, double x, double y, SDL_Renderer* renderer, int animStyle, SDL_Surface* surface, double animDur, int srcWidth);
 	~Sprite();
 
 	void update(double deltaTime);
@@ -20,5 +20,7 @@ public:
 	double animAcc, animDur;
 	int animStyle;
 	bool animDir;
+	double xPos, yPos, xVel, yVel;
+	int srcWidth;
 };
 

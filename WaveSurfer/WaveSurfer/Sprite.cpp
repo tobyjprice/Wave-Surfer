@@ -6,15 +6,22 @@ Sprite::Sprite()
 {
 }
 
-Sprite::Sprite(int w, int h, double x, double y, SDL_Renderer* inRenderer, int inAnimStyle, SDL_Surface* inSurface, double inAnimDur)
+Sprite::Sprite(int w, int h, double x, double y, SDL_Renderer* inRenderer, int inAnimStyle, SDL_Surface* inSurface, double inAnimDur, int inSrcWidth)
 {
 	dstRect.h = h;
 	dstRect.w = w;
 	dstRect.x = x;
 	dstRect.y = y;
 
-	srcRect.h = h;
-	srcRect.w = w;
+	xPos = x;
+	yPos = y;
+
+	yVel = 0;
+
+	srcWidth = inSrcWidth;
+
+	srcRect.h = srcWidth;
+	srcRect.w = srcWidth;
 	srcRect.x = 0;
 	srcRect.y = 0;
 

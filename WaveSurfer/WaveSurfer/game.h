@@ -3,6 +3,7 @@
 #include "SDL.h"
 #include "Sprite.h"
 #include <vector>
+#include <iostream>
 
 class game
 {
@@ -20,11 +21,13 @@ public:
 	bool running;
 	Sprite* sprite;
 	Sprite* seagull;
+	Sprite* cloud;
 	std::vector<Sprite*> bg;
+	std::vector<Sprite*> spriteList;
 private:
 	SDL_Surface* playerSurf;
 	SDL_Surface* seagullSurf;
 	SDL_Surface* bgSurf;
-	
+	SDL_Surface* cloudSurf;
 };
 

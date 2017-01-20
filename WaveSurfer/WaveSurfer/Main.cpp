@@ -25,7 +25,8 @@ int main(int argc, char* argv[])
 	SDL_Window* window = SDL_CreateWindow("Wave Surfer", display.w / 4, display.h /4, display.w / 2, display.h / 2, SDL_WINDOW_RESIZABLE);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, NULL);
 
-	SDL_RenderSetLogicalSize(renderer, 320, 180);
+	// MAGIC CODE IN HERE THANKS GOODBYE
+	SDL_RenderSetLogicalSize(renderer, 640, 360);
 
 	game game(window, renderer);
 	game.running = true;
@@ -105,8 +106,9 @@ void render(game* game)
 	{
 		SDL_RenderCopy(game->renderer, bg->texture, NULL, &bg->dstRect);
 	}
-	SDL_RenderCopy(game->renderer, game->sprite->texture, &game->sprite->srcRect, &game->sprite->dstRect);
-	SDL_RenderCopy(game->renderer, game->seagull->texture, &game->seagull->srcRect, &game->seagull->dstRect);
-	
+	for (auto& sprite : game->spriteList)
+	{
+		SDL_RenderCopy(game->renderer, sprite->texture, &sprite->srcRect, &sprite->dstRect);
+	}
 	SDL_RenderPresent(game->renderer);
 }
