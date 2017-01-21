@@ -28,8 +28,15 @@ public:
 
 class Wave : Sprite {
 public:
+
+	Wave(int w, int h, double x, double y, SDL_Renderer* renderer, int animStyle, SDL_Surface* surface, double animDur, int srcWidth);
+
 	double xPos;
 	double oldAng;
+	SDL_Texture* texture;
+	SDL_Rect dstRect;
 
 	void updatePos(SDL_GameController *currentController);
 };
+
+

@@ -46,11 +46,17 @@ game::game(SDL_Window* inWindow, SDL_Renderer* inRenderer)
 	spriteList.push_back(sprite);
 	seagull = new Sprite(32, 32, 320, 180, renderer, 0, seagullSurf, 0.023, 32);
 	spriteList.push_back(seagull);
-	waves = new Wave();
+	waves = new Wave(32, 32, 320, 180, renderer, 0, seagullSurf, 0.023, 32);
 	waves->xPos = 0;
 
 	cloud = new Sprite(128, 64, 100, 30, renderer, -1, cloudSurf, 0.023, 64);
 	spriteList.push_back(cloud);
+
+	for (int x = 0; x < 500; x++)
+	{
+		Sprite* tempPx = new Sprite(1, 1, 0, 0, renderer, -1, pixelSurf, 0.023, 1);
+		pixelList.push_back(tempPx);
+	}
 }
 
 void game::update(double dt, SDL_GameController *currentController)
@@ -61,7 +67,6 @@ void game::update(double dt, SDL_GameController *currentController)
 	sprite->update(dt);
 	seagull->update(dt);
 	updateBg(dt);
-
 
 	//Figure out current wave
 	//std::cout << waves->xPos << " - " << -pow((waves->xPos), 3) * 0.1 << std::endl;
@@ -79,18 +84,50 @@ void game::update(double dt, SDL_GameController *currentController)
 	//std::cout << angleDiff << std::endl;
 
 	//Ground collision code for cosine wave
-	if (sprite->yPos >= (float)60 * cos(waves->xPos) + (float)200) {
+	//if (sprite->yPos >= (float)60 * cos(waves->xPos) + (float)200) {
 		//If sprite is under ground place on ground using velocity
 		float fryPos = (float)60 * cos(waves->xPos) + (float)200;
-		sprite->yVel = -(sprite->oldY - fryPos);
+
+		std::cout << "guff" << std::endl;
+
+		double followGravity = sprite->yVel + 5 * dt;
+		double followLine = -(sprite->yPos - fryPos);
+
+		if (followGravity < followLine) {
+			//Follow gravity
+			sprite->yVel = followGravity;
+		}
+		else {
+			//Follow the line
+			sprite->yVel = followLine;
+		}
+
+		//if () {
+		//	sprite->yVel = -(sprite->yPos - fryPos);
+		//	
+		//}
+		//else {
+		//	//If sprite is above ground apply gravity
+		//	sprite->yVel += 5 * dt;
+
+		//	std::cout << "other guff" << std::endl;
+		//}
+		
+		std::cout << sprite->yPos << "\t" << sprite->yVel << std::endl;
+
+	//}
+	//else {
+	//	//If sprite is above ground apply gravity
+	//	sprite->yVel += 5* dt;
+	//} 
+
+	for (int x = 0; x < 500; x++)
+	{
+		pixelList[x]->dstRect.x = x + waves->xPos;
+		pixelList[x]->dstRect.y = (float)60 * cos(waves->xPos) + (float)200;
 	}
-	else {
-		//If sprite is above ground apply gravity
-		sprite->yVel += 10 * dt;
-	} 
 
-
-	//std::cout << (sprite->oldY - sprite->yPos) / dt << std::endl;
+	
 
 	
 	
@@ -111,13 +148,17 @@ void game::update(double dt, SDL_GameController *currentController)
 	
 	//std::cout << sprite->yVel << std::endl;
 
-	sprite->yPos = sprite->yPos + sprite->yVel;
+	sprite->oldY = sprite->yPos;
 
-	std::cout << sprite->yPos << std::endl;
+	sprite->yPos = sprite->yPos + sprite->yVel;
 
 	sprite->dstRect.y = sprite->yPos;
 
-	sprite->oldY = sprite->yPos;
+	
+
+	waves->dstRect.x = waves->xPos;
+
+
 	
 	//waves->oldAng = waveAng;
 }
@@ -162,6 +203,11 @@ void game::load_Surfaces()
 	if (!cloudSurf) {
 		SDL_Log("IMG_Load: %s\n", IMG_GetError());
 	}
+
+	pixelSurf = IMG_Load("..//resources//pixel.png");
+	if (!pixelSurf) {
+		SDL_Log("IMG_Load: %s\n", IMG_GetError());
+	}
 }
 
 game::~game()
@@ -172,6 +218,6 @@ game::~game()
 
 
 void Wave::updatePos(SDL_GameController *currentController) {
-	xPos = xPos + (SDL_GameControllerGetAxis(currentController, SDL_CONTROLLER_AXIS_LEFTY) * 0.00001);
+	xPos = xPos + (SDL_GameControllerGetAxis(currentController, SDL_CONTROLLER_AXIS_LEFTY) * 0.000003);
 	//std::cout << xPos << std::endl;
 }

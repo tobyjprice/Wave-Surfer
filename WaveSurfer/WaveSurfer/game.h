@@ -25,9 +25,13 @@ public:
 	Wave* waves;
 	std::vector<Sprite*> bg;
 	std::vector<Sprite*> spriteList;
+
+	std::vector<Sprite*> pixelList;
 private:
 	SDL_Surface* playerSurf;
 	SDL_Surface* seagullSurf;
 	SDL_Surface* bgSurf;
 	SDL_Surface* cloudSurf;
+	SDL_Surface* pixelSurf;
+
 };

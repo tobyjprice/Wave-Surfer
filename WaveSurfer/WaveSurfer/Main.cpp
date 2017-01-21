@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 
 		double actualDT = dt / (float)1000;
 
-		std::cout << actualDT << std::endl;
+		//std::cout << actualDT << std::endl;
 
 		process_input(&game);
 		update(&game, actualDT, controllers[0]);
@@ -152,6 +152,13 @@ void render(game* game)
 	for (auto& sprite : game->spriteList)
 	{
 		SDL_RenderCopyEx(game->renderer, sprite->texture, &sprite->srcRect, &sprite->dstRect, sprite->rotation, 0, SDL_FLIP_NONE);
+	}
+	
+	SDL_RenderCopy(game->renderer, game->waves->texture, NULL, &game->waves->dstRect);
+
+	for (auto& px : game->pixelList)
+	{
+		SDL_RenderCopy(game->renderer, px->texture, NULL, &px->dstRect);
 	}
 
 	SDL_RenderPresent(game->renderer);
