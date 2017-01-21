@@ -13,7 +13,7 @@ public:
 	~game();
 
 	void load_Surfaces();
-	void update(double deltaTime);
+	void update(double deltaTime, SDL_GameController *currentController);
 	void updateBg(double deltaTime);
 
 	SDL_Window* window;
@@ -22,6 +22,7 @@ public:
 	Sprite* sprite;
 	Sprite* seagull;
 	Sprite* cloud;
+	Wave* waves;
 	std::vector<Sprite*> bg;
 	std::vector<Sprite*> spriteList;
 private:
@@ -30,4 +31,3 @@ private:
 	SDL_Surface* bgSurf;
 	SDL_Surface* cloudSurf;
 };
-

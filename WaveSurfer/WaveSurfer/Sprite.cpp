@@ -34,6 +34,11 @@ Sprite::Sprite(int w, int h, double x, double y, SDL_Renderer* inRenderer, int i
 	animDur = inAnimDur;
 	animDir = true;
 	animStyle = inAnimStyle;
+
+	oldX = 0;
+	oldY = 0;
+
+	rotation = 0;
 }
 
 void Sprite::update(double dt) 
@@ -46,7 +51,6 @@ void Sprite::update(double dt)
 	{
 		animateForward(dt);
 	}
-	
 }
 
 

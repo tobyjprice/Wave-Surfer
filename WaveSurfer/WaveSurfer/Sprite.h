@@ -22,5 +22,14 @@ public:
 	bool animDir;
 	double xPos, yPos, xVel, yVel;
 	int srcWidth;
+	double oldY, oldX;
+	double rotation;
 };
 
+class Wave : Sprite {
+public:
+	double xPos;
+	double oldAng;
+
+	void updatePos(SDL_GameController *currentController);
+};
