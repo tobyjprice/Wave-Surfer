@@ -77,7 +77,7 @@ void game::update(double dt, SDL_GameController* currentController)
 
 	// Score over time needs work!
 
-	//score += dt * 100;
+	score += (dt * 10);
 	
 	//std::cout << "RIGHT TRIGGER" << rTrig << std::endl;
 
@@ -164,13 +164,28 @@ void game::update(double dt, SDL_GameController* currentController)
 
 		if (!checkLandAngle())
 		{
-			sprite->yPos -= 300;
+			sprite->yPos = 0;
+			sprite->rotation = 0;
+			sprite->yVel = 0;
+			score = 0;
 		}
 		else
 		{
-			int numOfFlips = abs(sprite->flipAcc / 360);
+			int numOfFlips = abs((abs(sprite->flipAcc) + 60)/ 360);
 			std::cout << score << std::endl;
 			score += 100 * numOfFlips;
+
+			//Resets rotation on landing
+			double rotation;
+			if (sprite->rotation > 180) {
+				rotation = sprite->rotation - 360;
+			}
+			else {
+				rotation = sprite->rotation;
+			}
+			double rotAxis = ((0 + rotation * 10) / 11);
+			sprite->rotation = rotAxis;
+			//waves->lastInp = (0 + waves->lastInp * 30) / 31;
 		}
 
 		
@@ -194,7 +209,7 @@ void game::update(double dt, SDL_GameController* currentController)
 		waves->xPos = 0;
 	}
 
-	std::string s = std::to_string(score);
+	std::string s = std::to_string((int)score);
 	char const *pchar = s.c_str();
 	scoreText->update_texture(pchar);
 
@@ -262,7 +277,8 @@ void game::load_Surfaces()
 
 bool game::checkLandAngle()
 {
-	double x1, x2, y1, y2;
+	//This chunk of code always returns 0???
+	/*double x1, x2, y1, y2;
 
 	x1 = waves->xPos;
 	x2 = waves->xPos + sprite->dstRect.w;
@@ -270,9 +286,10 @@ bool game::checkLandAngle()
 	y1 = (float)60 * cos(x1 + M_PI + 1.1) + 400;
 	y2 = (float)60 * cos(x2 + M_PI + 1.1) + 400;
 
-	double angle = ( atan((y1 - y2) / (x2 - x1)) ) * (180/M_PI);
+	double angle = ( atan((y1 - y2) / (x2 - x1)) ) * (180/M_PI);*/
 
-	if (sprite->rotation < 1 || sprite->rotation > 359)
+
+	/*if (sprite->rotation < 1 || sprite->rotation > 359)
 	{
 		return true;
 	}
@@ -297,7 +314,48 @@ bool game::checkLandAngle()
 		{
 			return false;
 		}
+	}*/
+
+	double waveAngle = atan(((0.5 * sin(waves->xPos + 0.2)) - (0.5 *sin(waves->xPos - 0.2)))/0.04);
+
+	double rotation = 0;
+
+	if (sprite->rotation > 180) {
+		rotation = ((int)sprite->rotation % 360) -360;
 	}
+	else {
+		rotation = sprite->rotation;
+	}
+
+	std::cout << waveAngle * 180 / M_PI << "\t" << rotation << std::endl;
+
+	if (waveAngle * 180 / M_PI > 76) {
+		if (rotation > -90 && rotation < 55) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	if (waveAngle * 180 / M_PI < -76) {
+		if (rotation > -100 && rotation < 90) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	if (rotation > -90 && rotation < 90) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+
+
+	return false;
 }
 
 game::~game()

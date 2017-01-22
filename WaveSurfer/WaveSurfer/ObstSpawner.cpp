@@ -32,14 +32,14 @@ void ObstSpawner::update(double dt, double waveXPos)
 		
 
 
-		Enemy* seagullSp = new Enemy(32, 32, 1100, 140 + rand() % 70 , renderer, 0, seagullSurf, 0.023, 32, fRand(1,2));
+		Enemy* seagullSp = new Enemy(32, 32, 1100, 140 + rand() % 170 , renderer, 0, seagullSurf, 0.023, 32, fRand(1,2));
 		enemyList.push_back(seagullSp);
 		
 		std::cout << "Enemy Created" << std::endl << seagullSp->speed << std::endl;
 
 		if (spawnFreq > 5)
 		{
-			spawnFreq *= 0.99;
+			spawnFreq *= 0.98;
 		}
 		dtAcc = 0;
 	}
