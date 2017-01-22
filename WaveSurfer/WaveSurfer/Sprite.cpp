@@ -38,7 +38,11 @@ Sprite::Sprite(int w, int h, double x, double y, SDL_Renderer* inRenderer, int i
 	oldX = 0;
 	oldY = 0;
 
+	rotVel = 0;
 	rotation = 0;
+	rotAcc = 0;
+
+	flipAcc = 0;
 }
 
 void Sprite::update(double dt) 
@@ -102,38 +106,6 @@ void Sprite::animatePingPong(double dt)
 	}
 	animAcc += dt;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Wave::Wave(int w, int h, double x, double y, SDL_Renderer* inRenderer, int inAnimStyle, SDL_Surface* inSurface, double inAnimDur, int inSrcWidth)

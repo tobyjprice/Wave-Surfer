@@ -36,6 +36,9 @@ game::game(SDL_Window* inWindow, SDL_Renderer* inRenderer)
 		SDL_Log("Window Initialised OK!\n");
 	}
 
+	score = 0;
+	startTime = SDL_GetTicks();
+
 	obSpawner = new ObstSpawner(renderer, seagullSurf);
 
 	Sprite* temp = new Sprite(1024, 2304, 0, -1728, renderer, -1, bgSurf, 0.033, 720);
@@ -59,7 +62,7 @@ game::game(SDL_Window* inWindow, SDL_Renderer* inRenderer)
 	}
 }
 
-void game::update(double dt, SDL_GameController *currentController)
+void game::update(double dt, SDL_GameController* currentController)
 {
 	for (auto& enemy : obSpawner->enemyList)
 	{
@@ -70,15 +73,59 @@ void game::update(double dt, SDL_GameController *currentController)
 		}
 	}
 
-
-
 	
+
+	score = (SDL_GetTicks() - startTime)/100;
+	
+	//std::cout << "RIGHT TRIGGER" << rTrig << std::endl;
+
+	//std::cout << "Score: " << score << std::endl;
 
 	sprite->oldX = waves->xPos;
 	waves->updatePos(currentController, dt);
 
 	sprite->update(dt);
 	updateBg(dt);
+
+	// Rotation calculations
+	double rTrig = SDL_GameControllerGetAxis(currentController, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+	double lTrig = SDL_GameControllerGetAxis(currentController, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+
+	if (sprite->rotAcc < 50000 && sprite->rotAcc > -50000)
+	{
+		sprite->rotAcc += (rTrig - lTrig) * 0.05;
+
+	}
+
+	sprite->rotVel = sprite->rotAcc * dt;
+	sprite->rotation += sprite->rotVel * dt;
+
+	sprite->flipAcc += sprite->rotVel * dt;
+
+	if (sprite->rotation > 360)
+	{
+		std::cout << "FLIP" << std::endl;
+		sprite->rotation -= 360;
+	}
+	else if (sprite->rotation < 0)
+	{
+		std::cout << "FLIP" << std::endl;
+		sprite->rotation += 360;
+	}
+
+
+	if (sprite->rotAcc > 0 && rTrig == 0)
+	{
+		sprite->rotAcc -= 1250;
+	}
+	else if (sprite->rotAcc < 0 && lTrig == 0)
+	{			
+		sprite->rotAcc += 1250;
+	}
+	else
+	{
+		//sprite->rotAcc = 0;
+	}
 
 
 
@@ -103,11 +150,31 @@ void game::update(double dt, SDL_GameController *currentController)
 
 	if (followGravity < followLine) {
 		//Follow gravity
+
 		sprite->yVel = followGravity * 1.005;
+
+		
 	}
 	else {
 		//Follow the line
 		sprite->yVel = followLine * 1.005;
+
+
+		if (!checkLandAngle())
+		{
+			sprite->yPos -= 300;
+		}
+		else
+		{
+			int numOfFlips = abs(sprite->flipAcc / 360);
+
+			std::cout << numOfFlips << "    " << sprite->flipAcc << std::endl;
+		}
+
+		
+		sprite->flipAcc = 0;
+
+		
 	}
 
 	/*for (int x = 0; x < 500; x++)
@@ -123,7 +190,6 @@ void game::update(double dt, SDL_GameController *currentController)
 	if (waves->dstRect.x < -704)
 	{
 		waves->xPos = 0;
-		std::cout << "MOVE" << std::endl;
 	}
 
 	waves->dstRect.x = waves->xPos * 60 -330;
@@ -179,6 +245,46 @@ void game::load_Surfaces()
 	seaSurf = IMG_Load("..//resources//sea.png");
 	if (!seaSurf) {
 		SDL_Log("IMG_Load: %s\n", IMG_GetError());
+	}
+}
+
+bool game::checkLandAngle()
+{
+	double x1, x2, y1, y2;
+
+	x1 = waves->xPos;
+	x2 = waves->xPos + sprite->dstRect.w;
+
+	y1 = (float)60 * cos(x1 + M_PI + 1.1) + 400;
+	y2 = (float)60 * cos(x2 + M_PI + 1.1) + 400;
+
+	double angle = ( atan((y1 - y2) / (x2 - x1)) ) * (180/M_PI);
+
+	if (sprite->rotation < 1 || sprite->rotation > 359)
+	{
+		return true;
+	}
+	else if (angle > -46 && angle < 0)
+	{
+		if (sprite->rotation > 280 || (sprite->rotation < 50 && sprite->rotation > 0))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (angle > 0 && angle < 46)
+	{
+		if ((sprite->rotation < 90 && sprite->rotation > 0) || sprite->rotation > 300)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
 

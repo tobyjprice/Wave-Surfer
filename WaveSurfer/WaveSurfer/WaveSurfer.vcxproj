@@ -153,12 +153,14 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ObstSpawner.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="ObstSpawner.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Text.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

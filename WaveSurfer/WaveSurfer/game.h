@@ -16,6 +16,7 @@ public:
 	void load_Surfaces();
 	void update(double deltaTime, SDL_GameController *currentController);
 	void updateBg(double deltaTime);
+	bool checkLandAngle();
 
 	SDL_Window* window;
 	SDL_Renderer* renderer;
@@ -26,6 +27,8 @@ public:
 	Sprite* cloud;
 	Sprite* sea;
 	Wave* waves;
+	int score, startTime;
+
 	std::vector<Sprite*> bg;
 	std::vector<Sprite*> spriteList;
 

@@ -24,6 +24,9 @@ public:
 	int srcWidth;
 	double oldY, oldX;
 	double rotation;
+	double rotVel;
+	double rotAcc;
+	double flipAcc;
 };
 
 class Wave : public Sprite {
