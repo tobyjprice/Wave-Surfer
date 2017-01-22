@@ -1,8 +1,6 @@
 ﻿  game.cpp
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(89): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(126): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(127): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(155): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(159): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(99): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(121): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(129): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   WaveSurfer.vcxproj -> C:\Users\Computing\Documents\GitHub\Wave-Surfer\WaveSurfer\Debug\WaveSurfer.exe
   WaveSurfer.vcxproj -> C:\Users\Computing\Documents\GitHub\Wave-Surfer\WaveSurfer\Debug\WaveSurfer.pdb (Full PDB)

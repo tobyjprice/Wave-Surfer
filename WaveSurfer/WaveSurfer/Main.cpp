@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, NULL);
 
 	// MAGIC CODE IN HERE THANKS GOODBYE
-	SDL_RenderSetLogicalSize(renderer, 640, 360);
+	SDL_RenderSetLogicalSize(renderer, 1024, 576);
 
 	game game(window, renderer);
 	game.running = true;
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 
 		if (time < 0) continue;
 
-		int sleepTime = 16 - time;
+		int sleepTime = 8 - time;
 
 		if (sleepTime > 0)
 		{
@@ -149,17 +149,25 @@ void render(game* game)
 	{
 		SDL_RenderCopy(game->renderer, bg->texture, NULL, &bg->dstRect);
 	}
+
+	SDL_RenderCopy(game->renderer, game->waves->texture, NULL, &game->waves->dstRect);
+
 	for (auto& sprite : game->spriteList)
 	{
 		SDL_RenderCopyEx(game->renderer, sprite->texture, &sprite->srcRect, &sprite->dstRect, sprite->rotation, 0, SDL_FLIP_NONE);
 	}
 	
-	SDL_RenderCopy(game->renderer, game->waves->texture, NULL, &game->waves->dstRect);
+	for (auto& enmy : game->obSpawner->enemyList)
+	{
+		SDL_RenderCopy(game->renderer, enmy->texture, &enmy->srcRect, &enmy->dstRect);
+	}
 
-	for (auto& px : game->pixelList)
+	
+
+	/*for (auto& px : game->pixelList)
 	{
 		SDL_RenderCopy(game->renderer, px->texture, NULL, &px->dstRect);
-	}
+	}*/
 
 	SDL_RenderPresent(game->renderer);
 }

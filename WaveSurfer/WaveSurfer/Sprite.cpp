@@ -169,4 +169,6 @@ Wave::Wave(int w, int h, double x, double y, SDL_Renderer* inRenderer, int inAni
 	oldY = 0;
 
 	rotation = 0;
+
+	lastInp = 0;
 }

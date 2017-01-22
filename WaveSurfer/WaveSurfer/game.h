@@ -2,6 +2,7 @@
 
 #include "SDL.h"
 #include "Sprite.h"
+#include "ObstSpawner.h"
 #include <vector>
 #include <iostream>
 
@@ -19,9 +20,11 @@ public:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	bool running;
+
+	ObstSpawner* obSpawner;
 	Sprite* sprite;
-	Sprite* seagull;
 	Sprite* cloud;
+	Sprite* sea;
 	Wave* waves;
 	std::vector<Sprite*> bg;
 	std::vector<Sprite*> spriteList;
@@ -33,5 +36,6 @@ private:
 	SDL_Surface* bgSurf;
 	SDL_Surface* cloudSurf;
 	SDL_Surface* pixelSurf;
+	SDL_Surface* seaSurf;
 
 };

@@ -36,18 +36,18 @@ game::game(SDL_Window* inWindow, SDL_Renderer* inRenderer)
 		SDL_Log("Window Initialised OK!\n");
 	}
 
+	obSpawner = new ObstSpawner(renderer, seagullSurf);
 
-	Sprite* temp = new Sprite(640, 1440, 0, -1080, renderer, -1, bgSurf, 0.033, 720);
+	Sprite* temp = new Sprite(1024, 2304, 0, -1728, renderer, -1, bgSurf, 0.033, 720);
 	bg.emplace_back(temp);
-	Sprite* temp2 = new Sprite(640, 1440, 0, -2520, renderer, -1, bgSurf, 0.033, 720);
+	Sprite* temp2 = new Sprite(1024, 2304, 0, -4032, renderer, -1, bgSurf, 0.033, 720);
 	bg.emplace_back(temp2);
 	
-	sprite = new Sprite(64, 64, (*rendW / 2) - 32, (*rendH / 2) - 32, renderer, 1, playerSurf, 0.05, 64);
-	spriteList.push_back(sprite);
-	seagull = new Sprite(32, 32, 320, 180, renderer, 0, seagullSurf, 0.023, 32);
-	spriteList.push_back(seagull);
-	waves = new Wave(32, 32, 320, 180, renderer, 0, seagullSurf, 0.023, 32);
+	waves = new Wave(1875, 202, 0, 390, renderer, 0, seaSurf, 0.023, 64);
 	waves->xPos = 0;
+
+	sprite = new Sprite(64, 64, 32, 0, renderer, 1, playerSurf, 0.05, 64);
+	spriteList.push_back(sprite);
 
 	cloud = new Sprite(128, 64, 100, 30, renderer, -1, cloudSurf, 0.023, 64);
 	spriteList.push_back(cloud);
@@ -61,106 +61,73 @@ game::game(SDL_Window* inWindow, SDL_Renderer* inRenderer)
 
 void game::update(double dt, SDL_GameController *currentController)
 {
+	for (auto& enemy : obSpawner->enemyList)
+	{
+		if (sqrt(pow((sprite->dstRect.x + (sprite->dstRect.w / 2) )  - (enemy->dstRect.x + (enemy->dstRect.w / 2)),2) + pow((sprite->dstRect.y + (sprite->dstRect.h / 2)) - (enemy->dstRect.y + (enemy->dstRect.h / 4)), 2)) < (sprite->dstRect.w / 2) + (enemy->dstRect.h / 4))
+		{
+			std::cout << "COLLISION";
+			//running = false;
+		}
+	}
+
+
+
+	
+
 	sprite->oldX = waves->xPos;
-	waves->updatePos(currentController);
+	waves->updatePos(currentController, dt);
 
 	sprite->update(dt);
-	seagull->update(dt);
 	updateBg(dt);
 
-	//Figure out current wave
-	//std::cout << waves->xPos << " - " << -pow((waves->xPos), 3) * 0.1 << std::endl;
 
-	// Calculate angles
-	//double waveAng = atan( (waves->xPos - sprite->oldX) / (60 * cos(waves->xPos) + 200 - sprite->oldY) );
 
-	//double angleDiff = waves->oldAng - waveAng;
+	double axis = 0;
+	double inAxis = waves->updatePos(currentController, dt);
 
-	//sprite->rotation = waveAng * (180/ M_PI);
-	//std::cout << sprite->rotation << std::endl;
+	//Updating position of the waves
+	if (inAxis > 0.04) { inAxis = 0.04; };
+	if (inAxis < -0.04) { inAxis = -0.04; };
 
-	//sprite->rotation += angleDiff * (180 / M_PI);
+	axis = ((inAxis + waves->lastInp * 30) / 31 + waves->xPos);
+	waves->xPos = axis - 0.042;
+	waves->lastInp = (inAxis + waves->lastInp * 30) / 31;
 
-	//std::cout << angleDiff << std::endl;
+	double waveVel = (waves->oldX - waves->xPos) / dt;
+	obSpawner->update(dt, waveVel/2);
 
-	//Ground collision code for cosine wave
-	//if (sprite->yPos >= (float)60 * cos(waves->xPos) + (float)200) {
-		//If sprite is under ground place on ground using velocity
-		float fryPos = (float)60 * cos(waves->xPos) + (float)200;
+	float fryPos = (float)60 * cos(waves->xPos + M_PI + 1.1) + 400;
 
-		std::cout << "guff" << std::endl;
+	double followGravity = sprite->yVel + 5 * dt;
+	double followLine = -(sprite->yPos - fryPos);
 
-		double followGravity = sprite->yVel + 5 * dt;
-		double followLine = -(sprite->yPos - fryPos);
-
-		if (followGravity < followLine) {
-			//Follow gravity
-			sprite->yVel = followGravity;
-		}
-		else {
-			//Follow the line
-			sprite->yVel = followLine;
-		}
-
-		//if () {
-		//	sprite->yVel = -(sprite->yPos - fryPos);
-		//	
-		//}
-		//else {
-		//	//If sprite is above ground apply gravity
-		//	sprite->yVel += 5 * dt;
-
-		//	std::cout << "other guff" << std::endl;
-		//}
-		
-		std::cout << sprite->yPos << "\t" << sprite->yVel << std::endl;
-
-	//}
-	//else {
-	//	//If sprite is above ground apply gravity
-	//	sprite->yVel += 5* dt;
-	//} 
-
-	for (int x = 0; x < 500; x++)
-	{
-		pixelList[x]->dstRect.x = x + waves->xPos;
-		pixelList[x]->dstRect.y = (float)60 * cos(waves->xPos) + (float)200;
-	}
-
-	
-
-	
-	
-	//#####################
-
-	/*Ground collision code for other wave
-	if (sprite->yPos >= -pow((waves->xPos), 3) * 0.1) {
-		//If sprite is under ground place on ground using velocity
-		sprite->yPos = -pow( (waves->xPos) , 3) * 0.1;
-		sprite->yVel = (oldY - sprite->yPos) * dt;
+	if (followGravity < followLine) {
+		//Follow gravity
+		sprite->yVel = followGravity * 1.005;
 	}
 	else {
-		//If sprite is above ground apply gravity
-		sprite->yVel += 10 * dt;
+		//Follow the line
+		sprite->yVel = followLine * 1.005;
+	}
+
+	/*for (int x = 0; x < 500; x++)
+	{
+		pixelList[x]->dstRect.x = x + waves->xPos;
+		pixelList[x]->dstRect.y = 60 * cos(waves->xPos) + 200;
 	}*/
 
-	//#####################
-	
-	//std::cout << sprite->yVel << std::endl;
-
 	sprite->oldY = sprite->yPos;
-
 	sprite->yPos = sprite->yPos + sprite->yVel;
-
 	sprite->dstRect.y = sprite->yPos;
 
-	
+	if (waves->dstRect.x < -704)
+	{
+		waves->xPos = 0;
+		std::cout << "MOVE" << std::endl;
+	}
 
-	waves->dstRect.x = waves->xPos;
-
-
-	
-	//waves->oldAng = waveAng;
+	waves->dstRect.x = waves->xPos * 60 -330;
+	waves->oldX = waves->xPos;
 }
 
 void game::updateBg(double dt)
@@ -171,9 +138,9 @@ void game::updateBg(double dt)
 		{
 			back->dstRect.y += 1;
 
-			if (back->dstRect.y >= 360)
+			if (back->dstRect.y >= 576)
 			{
-				back->dstRect.y = -2520;
+				back->dstRect.y = -4032;
 			}
 
 			back->animAcc = 0;
@@ -208,6 +175,11 @@ void game::load_Surfaces()
 	if (!pixelSurf) {
 		SDL_Log("IMG_Load: %s\n", IMG_GetError());
 	}
+
+	seaSurf = IMG_Load("..//resources//sea.png");
+	if (!seaSurf) {
+		SDL_Log("IMG_Load: %s\n", IMG_GetError());
+	}
 }
 
 game::~game()
@@ -217,7 +189,6 @@ game::~game()
 
 
 
-void Wave::updatePos(SDL_GameController *currentController) {
-	xPos = xPos + (SDL_GameControllerGetAxis(currentController, SDL_CONTROLLER_AXIS_LEFTY) * 0.000003);
-	//std::cout << xPos << std::endl;
+double Wave::updatePos(SDL_GameController *currentController, double dt) {
+	return (SDL_GameControllerGetAxis(currentController, SDL_CONTROLLER_AXIS_LEFTY) * 0.0001) * dt;
 }
