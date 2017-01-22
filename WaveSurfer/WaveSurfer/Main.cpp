@@ -4,8 +4,8 @@
 #include "game.h"
 #include <chrono>
 
-static void update(game* game, double deltaTime, SDL_GameController *currentController);
-static void process_input(game* game);
+static void update(game* game, double deltaTime, SDL_GameController *currentController, bool &menu);
+static void process_input(game* game, SDL_DisplayMode &display, SDL_Window* window, bool &fullscreen);
 static void render(game* game);
 
 int main(int argc, char* argv[])
@@ -71,6 +71,9 @@ int main(int argc, char* argv[])
 	int time = 0;
 	int dt = 0;
 
+	bool menu = true;
+	bool fullscreen = false;
+
 	while (game.running)
 	{
 		/*auto currTime = std::chrono::high_resolution_clock::now();
@@ -89,8 +92,8 @@ int main(int argc, char* argv[])
 
 		//std::cout << actualDT << std::endl;
 
-		process_input(&game);
-		update(&game, actualDT, controllers[0]);
+		process_input(&game,display,window,fullscreen);
+		update(&game, actualDT, controllers[0], menu);
 		render(&game);
 
 		time = SDL_GetTicks() - start;
@@ -124,12 +127,12 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void update(game* game, double dt, SDL_GameController *currentController)
+void update(game* game, double dt, SDL_GameController *currentController, bool &menu)
 {
-	game->update(dt, currentController);
+	game->update(dt, currentController, menu);
 }
 
-void process_input(game* game)
+void process_input(game* game, SDL_DisplayMode &display, SDL_Window* window, bool &fullscreen)
 {
 	SDL_Event event;
 
@@ -142,11 +145,32 @@ void process_input(game* game)
 			{
 			case SDLK_ESCAPE:
 				game->running = false;
-				return;
+				break;
 			default:
 				break;
 			}
-		default:
+
+			if (event.key.keysym.sym == SDLK_f) {
+				if (fullscreen) {
+					//Exiting fullscreen, setting a new resolution seems to be futile
+
+					SDL_SetWindowFullscreen(window, 0);
+					//SDL_SetWindowSize(win, 640, 360);
+					fullscreen = false;
+				}
+				else {
+					//Entering fullscreen, gets screen size, sets the game to that and then enters fullscreen
+					SDL_GetCurrentDisplayMode(0, &display);
+					int width = display.w;
+					int height = display.h;
+					SDL_SetWindowSize(window, width, height);
+					SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+					fullscreen = true;
+				}
+			}
+		}
+		if (event.type == SDL_QUIT) {
+			game->running = false;
 			break;
 		}
 	}
@@ -158,6 +182,11 @@ void render(game* game)
 	for (auto& bg : game->bg)
 	{
 		SDL_RenderCopy(game->renderer, bg->texture, NULL, &bg->dstRect);
+	}
+
+	for (auto& cloud : game->cloudList)
+	{
+		SDL_RenderCopy(game->renderer, cloud->texture, &cloud->srcRect, &cloud->dstRect);
 	}
 
 	SDL_RenderCopy(game->renderer, game->waves->texture, NULL, &game->waves->dstRect);

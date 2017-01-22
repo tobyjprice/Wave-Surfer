@@ -16,7 +16,7 @@ public:
 	~game();
 
 	void load_Surfaces();
-	void update(double deltaTime, SDL_GameController *currentController);
+	void update(double deltaTime, SDL_GameController *currentController, bool &menu);
 	void updateBg(double deltaTime);
 	bool checkLandAngle();
 
@@ -26,8 +26,8 @@ public:
 
 	ObstSpawner* obSpawner;
 	Sprite* sprite;
-	Sprite* cloud;
 	Sprite* sea;
+	Sprite* pressA;
 	Text* scoreText;
 	Wave* waves;
 	double score;
@@ -35,7 +35,7 @@ public:
 
 	std::vector<Sprite*> bg;
 	std::vector<Sprite*> spriteList;
-
+	std::vector<Sprite*> cloudList;
 	std::vector<Sprite*> pixelList;
 private:
 	SDL_Surface* playerSurf;
@@ -44,6 +44,7 @@ private:
 	SDL_Surface* cloudSurf;
 	SDL_Surface* pixelSurf;
 	SDL_Surface* seaSurf;
+	SDL_Surface* pressASurf;
 	TTF_Font* scoreFont;
 
 };

@@ -1,4 +1,9 @@
-﻿  ObstSpawner.cpp
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\obstspawner.cpp(42): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+﻿  game.cpp
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(117): warning C4800: 'Uint8': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(171): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(194): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(233): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(252): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(278): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
   WaveSurfer.vcxproj -> C:\Users\Computing\Documents\GitHub\Wave-Surfer\WaveSurfer\Debug\WaveSurfer.exe
   WaveSurfer.vcxproj -> C:\Users\Computing\Documents\GitHub\Wave-Surfer\WaveSurfer\Debug\WaveSurfer.pdb (Full PDB)
