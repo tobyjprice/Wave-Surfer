@@ -2,9 +2,11 @@
 
 #include "SDL.h"
 #include "Sprite.h"
+#include "Text.h"
 #include "ObstSpawner.h"
 #include <vector>
 #include <iostream>
+#include <string>
 
 class game
 {
@@ -26,8 +28,10 @@ public:
 	Sprite* sprite;
 	Sprite* cloud;
 	Sprite* sea;
+	Text* scoreText;
 	Wave* waves;
-	int score, startTime;
+	double score;
+	int startTime;
 
 	std::vector<Sprite*> bg;
 	std::vector<Sprite*> spriteList;
@@ -40,5 +44,6 @@ private:
 	SDL_Surface* cloudSurf;
 	SDL_Surface* pixelSurf;
 	SDL_Surface* seaSurf;
+	TTF_Font* scoreFont;
 
 };

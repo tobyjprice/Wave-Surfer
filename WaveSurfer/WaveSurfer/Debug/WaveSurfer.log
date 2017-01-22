@@ -1,8 +1,8 @@
 ﻿  game.cpp
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(146): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(169): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(188): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(195): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(289): warning C4715: 'game::checkLandAngle': not all control paths return a value
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(148): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(171): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(190): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(201): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\computing\documents\github\wave-surfer\wavesurfer\wavesurfer\game.cpp(301): warning C4715: 'game::checkLandAngle': not all control paths return a value
   WaveSurfer.vcxproj -> C:\Users\Computing\Documents\GitHub\Wave-Surfer\WaveSurfer\Debug\WaveSurfer.exe
   WaveSurfer.vcxproj -> C:\Users\Computing\Documents\GitHub\Wave-Surfer\WaveSurfer\Debug\WaveSurfer.pdb (Full PDB)

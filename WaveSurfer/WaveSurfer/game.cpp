@@ -55,6 +55,8 @@ game::game(SDL_Window* inWindow, SDL_Renderer* inRenderer)
 	cloud = new Sprite(128, 64, 100, 30, renderer, -1, cloudSurf, 0.023, 64);
 	spriteList.push_back(cloud);
 
+	scoreText = new Text("Hello", *rendW - 110, *rendH-60, 100, 50, renderer, scoreFont);
+
 	for (int x = 0; x < 500; x++)
 	{
 		Sprite* tempPx = new Sprite(1, 1, 0, 0, renderer, -1, pixelSurf, 0.023, 1);
@@ -73,9 +75,9 @@ void game::update(double dt, SDL_GameController* currentController)
 		}
 	}
 
-	
+	// Score over time needs work!
 
-	score = (SDL_GetTicks() - startTime)/100;
+	//score += dt * 100;
 	
 	//std::cout << "RIGHT TRIGGER" << rTrig << std::endl;
 
@@ -167,8 +169,8 @@ void game::update(double dt, SDL_GameController* currentController)
 		else
 		{
 			int numOfFlips = abs(sprite->flipAcc / 360);
-
-			std::cout << numOfFlips << "    " << sprite->flipAcc << std::endl;
+			std::cout << score << std::endl;
+			score += 100 * numOfFlips;
 		}
 
 		
@@ -191,6 +193,10 @@ void game::update(double dt, SDL_GameController* currentController)
 	{
 		waves->xPos = 0;
 	}
+
+	std::string s = std::to_string(score);
+	char const *pchar = s.c_str();
+	scoreText->update_texture(pchar);
 
 	waves->dstRect.x = waves->xPos * 60 -330;
 	waves->oldX = waves->xPos;
@@ -245,6 +251,12 @@ void game::load_Surfaces()
 	seaSurf = IMG_Load("..//resources//sea.png");
 	if (!seaSurf) {
 		SDL_Log("IMG_Load: %s\n", IMG_GetError());
+	}
+
+	scoreFont = TTF_OpenFont("..//resources//true-crimes.ttf", 28);
+	if (!scoreFont)
+	{
+		SDL_Log("TTF_OpenFont: %s\n", TTF_GetError());
 	}
 }
 

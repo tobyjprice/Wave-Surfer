@@ -1,5 +1,6 @@
 #include <iostream>
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include "game.h"
 #include <chrono>
 
@@ -17,6 +18,15 @@ int main(int argc, char* argv[])
 	else
 	{
 		SDL_Log("SDL Initialised OK!\n");
+	}
+
+	if (TTF_Init() != 0) {
+		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
+			"SDL_Init Error: %s\n", SDL_GetError());
+	}
+	else
+	{
+		SDL_Log("TTF Initialised OK!\n");
 	}
 
 	SDL_DisplayMode display;
@@ -162,6 +172,7 @@ void render(game* game)
 		SDL_RenderCopy(game->renderer, enmy->texture, &enmy->srcRect, &enmy->dstRect);
 	}
 
+	SDL_RenderCopy(game->renderer, game->scoreText->texture, NULL, &game->scoreText->rect);
 	
 
 	/*for (auto& px : game->pixelList)
